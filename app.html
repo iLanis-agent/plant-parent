@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant Parent - never kill a houseplant again</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:#f4f7f0; color:#26331f; min-height:100vh; padding-bottom:50px; }
+  header { text-align:center; padding:30px 16px 4px; }
+  header h1 { font-size:30px; font-weight:800; }
+  header h1 span { color:#4d8c2f; }
+  header p { color:#7a8a6c; margin-top:6px; font-size:15px; }
+  .wrap { max-width:860px; margin:0 auto; padding:0 16px; }
+  h2.sec { font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:#8aa06f; margin:22px 0 10px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .pcard { background:#fff; border:1.5px solid #dde6d2; border-radius:13px; padding:12px 13px; cursor:pointer; transition:all .12s ease; user-select:none; }
+  .pcard:hover { border-color:#9dc283; }
+  .pcard.own { border-color:#4d8c2f; background:#eef6e6; box-shadow:0 3px 12px #4d8c2f18; }
+  .pcard .nm { font-weight:700; font-size:14.5px; }
+  .pcard .mt { font-size:12px; color:#7a8a6c; margin-top:3px; line-height:1.45; }
+  .pcard .flag { display:inline-block; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:99px; margin-top:6px; }
+  .flag.safe { background:#e2f3d9; color:#3d7a1f; }
+  .flag.toxic { background:#fde4e0; color:#b3402e; }
+  .myplant { background:#fff; border:1.5px solid #dde6d2; border-radius:13px; padding:13px 15px; margin-bottom:10px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .myplant .nm { font-weight:700; font-size:15px; min-width:130px; }
+  .myplant .stepper { display:flex; align-items:center; gap:8px; font-size:13.5px; color:#5c6e4e; }
+  .myplant .stepper button { width:28px; height:28px; border-radius:8px; border:1.5px solid #dde6d2; background:#fff; font-size:16px; font-weight:700; color:#4d8c2f; cursor:pointer; }
+  .myplant .waterbtn { margin-left:auto; background:linear-gradient(135deg,#67b83f,#4d8c2f); color:#fff; border:none; font-size:13px; font-weight:700; padding:8px 14px; border-radius:9px; cursor:pointer; }
+  .myplant .rm { background:none; border:none; color:#b3c0a5; font-size:16px; cursor:pointer; }
+  .due { font-size:12.5px; font-weight:700; padding:3px 9px; border-radius:99px; }
+  .due.over { background:#fde4e0; color:#b3402e; }
+  .due.today { background:#fff2cc; color:#96700a; }
+  .due.ok { background:#e2f3d9; color:#3d7a1f; }
+  .day { display:flex; gap:12px; align-items:baseline; padding:8px 12px; border-radius:10px; margin-bottom:5px; background:#fff; border:1px solid #e6edde; font-size:14px; }
+  .day .d { width:92px; font-weight:700; color:#42563a; flex:0 0 auto; }
+  .day .plants { color:#5c6e4e; }
+  .day.today { border-color:#4d8c2f; background:#eef6e6; }
+  #msg { text-align:center; color:#7a8a6c; font-size:14px; min-height:22px; margin-top:14px; }
+  footer { text-align:center; color:#9db08e; font-size:13px; margin-top:30px; }
+  footer a { color:#4d8c2f; }
+  .filters { display:flex; gap:8px; margin-bottom:4px; }
+  .filters button { border:1.5px solid #dde6d2; background:#fff; color:#6c7f5c; font-size:12.5px; font-weight:600; padding:6px 13px; border-radius:999px; cursor:pointer; }
+  .filters button.on { background:#4d8c2f; border-color:#4d8c2f; color:#fff; }
+</style>
+</head>
+<body>
+<header>
+  <h1>&#127807; Plant <span>Parent</span></h1>
+  <p>Tick your plants, tell it when you last watered, get the schedule.</p>
+</header>
+<div class="wrap">
+  <h2 class="sec">Your plants</h2>
+  <div class="filters">
+    <button data-f="all" class="on">All 24</button>
+    <button data-f="safe">Pet-safe only</button>
+    <button data-f="low">Low light OK</button>
+  </div>
+  <div class="cards" id="cards"></div>
+  <h2 class="sec">Care schedule</h2>
+  <div id="mine"></div>
+  <h2 class="sec">Next 14 days</h2>
+  <div id="schedule"></div>
+  <div id="msg"></div>
+</div>
+<footer>Your jungle stays in your browser.<br><a href="index.html">&larr; About</a> &nbsp;|&nbsp; Plant Parent &middot; idea #18 from the iLanis App Factory</footer>
+<script>
+var PLANTS=[
+ ["Pothos",7,"low-indirect",0],["Snake Plant",14,"low",0],["Monstera",7,"indirect",0],
+ ["ZZ Plant",14,"low",0],["Spider Plant",7,"indirect",1],["Peace Lily",5,"low-indirect",0],
+ ["Philodendron",7,"indirect",0],["Fiddle-Leaf Fig",7,"bright",0],["Rubber Plant",9,"bright",0],
+ ["Aloe Vera",14,"direct",0],["Jade Plant",14,"direct",0],["Cactus",21,"direct",1],
+ ["Succulent Mix",14,"direct",1],["Boston Fern",4,"indirect",1],["Calathea",5,"low-indirect",1],
+ ["Orchid",7,"indirect",1],["Dracaena",10,"indirect",0],["Chinese Evergreen",7,"low",0],
+ ["Parlor Palm",7,"low",1],["English Ivy",6,"indirect",0],["String of Pearls",12,"bright",0],
+ ["Pilea",7,"indirect",1],["Air Plant",5,"bright",1],["Bird of Paradise",7,"direct",0]
+];
+var state={own:{}};
+try{ state=JSON.parse(localStorage.getItem('pp-state')||'{"own":{}}'); if(!state.own) state={own:{}}; }catch(_){}
+var filter='all';
+function $(id){return document.getElementById(id);}
+function save(){ try{ localStorage.setItem('pp-state',JSON.stringify(state)); }catch(_){}}
+function passesFilter(p){
+  if(filter==='safe') return p[3]===1;
+  if(filter==='low') return p[2].indexOf('low')>=0;
+  return true;
+}
+function renderCards(){
+  var h='';
+  PLANTS.forEach(function(p,i){
+    if(!passesFilter(p)) return;
+    var own=state.own[p[0]]!==undefined;
+    h+='<div class="pcard'+(own?' own':'')+'" data-i="'+i+'">'+
+      '<div class="nm">'+p[0]+'</div>'+
+      '<div class="mt">every '+p[1]+'d &middot; '+p[2]+' light</div>'+
+      '<span class="flag '+(p[3]?'safe':'toxic')+'">'+(p[3]?'pet-safe':'toxic to pets')+'</span>'+
+    '</div>';
+  });
+  $('cards').innerHTML=h;
+  document.querySelectorAll('.pcard').forEach(function(c){
+    c.onclick=function(){
+      var p=PLANTS[parseInt(c.getAttribute('data-i'))];
+      if(state.own[p[0]]!==undefined) delete state.own[p[0]];
+      else state.own[p[0]]=todayISO(); // default: watered today
+      save(); renderAll();
+    };
+  });
+}
+function todayISO(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function shiftISO(iso,delta){ var d=new Date(iso+'T12:00:00'); d.setDate(d.getDate()+delta); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function daysLeftFor(nm){
+  var p=PLANTS.filter(function(x){return x[0]===nm;})[0];
+  var ms=new Date(todayISO()+'T12:00:00')-new Date(state.own[nm]+'T12:00:00');
+  var since=Math.round(ms/86400000);
+  return p[1]-since;
+}
+function dueLabel(days){
+  if(days<0) return {cls:'over',txt:'overdue by '+(-days)+'d'};
+  if(days===0) return {cls:'today',txt:'water today'};
+  return {cls:'ok',txt:'due in '+days+'d'};
+}
+function renderMine(){
+  var names=Object.keys(state.own);
+  if(!names.length){ $('mine').innerHTML='<div id="msg" style="text-align:left;padding:0">No plants yet - tick a few above.</div>'; return; }
+  var h='';
+  names.forEach(function(nm){
+    var daysLeft=daysLeftFor(nm);
+    var d=dueLabel(daysLeft);
+    h+='<div class="myplant"><div class="nm">'+nm+'</div>'+
+      '<div class="stepper"><button data-nm="'+nm+'" data-d="-1">&minus;</button><span>'+daysLeft+'d left</span><button data-nm="'+nm+'" data-d="1">+</button></div>'+
+      '<span class="due '+d.cls+'">'+d.txt+'</span>'+
+      '<button class="waterbtn" data-nm="'+nm+'">Just watered</button>'+
+      '<button class="rm" data-nm="'+nm+'" title="remove">&times;</button></div>';
+  });
+  $('mine').innerHTML=h;
+  document.querySelectorAll('.stepper button').forEach(function(b){
+    b.onclick=function(){
+      var nm=b.getAttribute('data-nm');
+      state.own[nm]=shiftISO(state.own[nm], -parseInt(b.getAttribute('data-d'))); // +1 day left = watered one day later
+      save(); renderAll();
+    };
+  });
+  document.querySelectorAll('.waterbtn').forEach(function(b){
+    b.onclick=function(){
+      var nm=b.getAttribute('data-nm');
+      state.own[nm]=todayISO();
+      save(); renderAll();
+    };
+  });
+  document.querySelectorAll('.rm').forEach(function(b){
+    b.onclick=function(){ delete state.own[b.getAttribute('data-nm')]; save(); renderAll(); };
+  });
+}
+function renderSchedule(){
+  var names=Object.keys(state.own);
+  if(!names.length){ $('schedule').innerHTML=''; return; }
+  var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var now=new Date();
+  var h='';
+  for(var off=0;off<14;off++){
+    var dueToday=[];
+    names.forEach(function(nm){ if(daysLeftFor(nm)===off) dueToday.push(nm); });
+    var dt=new Date(now.getTime()+off*86400000);
+    var label = off===0?'Today': off===1?'Tomorrow': days[dt.getDay()]+' '+(dt.getMonth()+1)+'/'+dt.getDate();
+    h+='<div class="day'+(off===0?' today':'')+'"><div class="d">'+label+'</div><div class="plants">'+(dueToday.length?('&#128167; '+dueToday.join(', ')):'')+'</div></div>';
+  }
+  $('schedule').innerHTML=h;
+}
+function renderAll(){ renderCards(); renderMine(); renderSchedule(); }
+document.querySelectorAll('[data-f]').forEach(function(b){
+  b.onclick=function(){
+    filter=b.getAttribute('data-f');
+    document.querySelectorAll('[data-f]').forEach(function(x){x.classList.toggle('on',x===b);});
+    renderCards();
+  };
+});
+renderAll();
+</script>
+</body>
+</html>
