@@ -136,7 +136,7 @@ function renderMine(){
   document.querySelectorAll('.stepper button').forEach(function(b){
     b.onclick=function(){
       var nm=b.getAttribute('data-nm');
-      state.own[nm]=shiftISO(state.own[nm], -parseInt(b.getAttribute('data-d'))); // +1 day left = watered one day later
+      state.own[nm]=shiftISO(state.own[nm], parseInt(b.getAttribute('data-d'))); // +1 day left = watered one day later
       save(); renderAll();
     };
   });
