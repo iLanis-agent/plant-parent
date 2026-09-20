@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant Parent - never kill a houseplant again</title>
+<meta name="description content="Plant Parent tracks 24 common houseplants: watering intervals, light needs, pet safety. Tick yours, set last-watered dates, get a 14-day watering schedule.">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:#f4f7f0; color:#26331f; min-height:100vh; }
+  .hero { min-height:92vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 20px;
+    background:radial-gradient(ellipse 75% 50% at 50% 110%, #67b83f2e 0%, #4d8c2f18 40%, transparent 70%); }
+  .badge { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:#4d8c2f; border:1px solid #b8d4a0; border-radius:999px; padding:6px 16px; margin-bottom:26px; }
+  h1 { font-size:clamp(38px,7.5vw,72px); font-weight:800; line-height:1.06;
+    background:linear-gradient(120deg,#3c5a24,#4d8c2f 45%,#67b83f); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .sub { font-size:clamp(16px,2.4vw,21px); color:#7a8a6c; max-width:560px; margin-top:20px; line-height:1.55; }
+  .cta { margin-top:38px; display:inline-block; background:linear-gradient(135deg,#67b83f,#4d8c2f); color:#fff; font-size:18px; font-weight:800;
+    padding:16px 44px; border-radius:14px; text-decoration:none; box-shadow:0 10px 34px #4d8c2f40; transition:transform .15s ease; }
+  .cta:hover { transform:translateY(-2px); }
+  .feats { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; max-width:900px; margin:0 auto; padding:20px 20px 70px; }
+  .f { background:#fff; border:1px solid #dde6d2; border-radius:14px; padding:22px; }
+  .f .ic { font-size:26px; }
+  .f h3 { font-size:16px; margin:10px 0 6px; }
+  .f p { font-size:14px; color:#7a8a6c; line-height:1.5; }
+  footer { text-align:center; color:#9db08e; font-size:13px; padding:26px; border-top:1px solid #dde6d2; }
+  footer a { color:#4d8c2f; }
+</style>
+</head>
+<body>
+  <section class="hero">
+    <div class="badge">iLanis App Factory &middot; idea #18</div>
+    <h1>Your plants die from<br>forgetfulness, not malice.</h1>
+    <p class="sub">Tick the houseplants you own, tap when you last watered each one, and get a 14-day schedule telling you exactly who drinks when. Overdue plants get called out. Pet-toxic ones too.</p>
+    <a class="cta" href="app.html">Adopt the schedule</a>
+  </section>
+  <section class="feats">
+    <div class="f"><div class="ic">&#127807;</div><h3>24 popular plants</h3><p>Pothos to bird of paradise, each with its real watering interval, light needs, and a pet-safety flag.</p></div>
+    <div class="f"><div class="ic">&#128197;</div><h3>14-day schedule</h3><p>Not reminders you ignore - a plain calendar of who needs water, today through two weeks out.</p></div>
+    <div class="f"><div class="ic">&#128167;</div><h3>One-tap watering</h3><p>Watered the monstera? One tap resets its clock. The schedule reshuffles instantly.</p></div>
+    <div class="f"><div class="ic">&#128062;</div><h3>Pet filters</h3><p>Cats and dogs chew things. Filter to pet-safe plants only, or see the toxic ones flagged before you buy.</p></div>
+  </section>
+  <footer>No sign-up. No tracking. Everything runs in your browser.<br>
+  Built by the <a href="https://ilanis-agent.github.io/app-factory/">iLanis App Factory</a> &middot; <a href="https://github.com/iLanis-agent/plant-parent">source on GitHub</a></footer>
+</body>
+</html>
